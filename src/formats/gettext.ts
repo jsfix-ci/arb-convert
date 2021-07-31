@@ -43,8 +43,8 @@ msgstr ""
   // msgid untranslated-string
   // msgstr translated-string
   Object.keys(sourceJs)
-    .filter(key => key[0] !== '@')
-    .forEach(key => {
+    .filter((key) => key[0] !== '@')
+    .forEach((key) => {
       const sourceString = sourceJs[key];
       const targetString = (targetJs && targetJs[key]) || '';
       const { description, placeholders } = sourceJs[`@${key}`];
@@ -55,8 +55,8 @@ msgstr ""
         content += `\n${gettextComment('#.', description, MAX_CHAR_WIDTH)}`;
       }
 
-      Object.keys(placeholders).forEach(paramName => {
-        Object.keys(placeholders[paramName]).forEach(property => {
+      Object.keys(placeholders).forEach((paramName) => {
+        Object.keys(placeholders[paramName]).forEach((property) => {
           const example = `{${paramName}} ${property}: ${placeholders[paramName][property]}`;
           content += `\n${gettextComment('#.', example, MAX_CHAR_WIDTH)}`;
         });
@@ -86,10 +86,10 @@ export function parse({ content }: IParseOptions): IConvertOptions {
   trgArb['@@locale'] = '';
   trgArb['@@last_modified'] = '';
 
-  gettext.forEach(entry => {
+  gettext.forEach((entry) => {
     // Header
     if (entry.msgctxt === '' && entry.msgid === '') {
-      entry.translatorCommentLines.forEach(comment => {
+      entry.translatorCommentLines.forEach((comment) => {
         if (comment.startsWith('original: ')) {
           original = comment.substr(10);
         } else if (comment.startsWith('srcLang: ')) {
@@ -105,7 +105,7 @@ export function parse({ content }: IParseOptions): IConvertOptions {
       const placeholders: IArbPlaceholders = {};
       let description = '';
 
-      entry.extractedCommentLines.forEach(comment => {
+      entry.extractedCommentLines.forEach((comment) => {
         const match = comment.match(/^\{([\w-]+)\} (.*): (.*)$/);
         if (match) {
           const [, field, name, value] = match;
@@ -221,7 +221,7 @@ export function gettextToJs(content: string): IGettext {
   let msgid = '';
   let msgstr = '';
 
-  content.split('\n').forEach(line => {
+  content.split('\n').forEach((line) => {
     if (line.trim() === '') {
       // End of block
       result.push({
@@ -284,11 +284,11 @@ export function gettextToJs(content: string): IGettext {
         break;
 
       case '#:':
-        references = references.concat(text.split(',').map(part => part.trim()));
+        references = references.concat(text.split(',').map((part) => part.trim()));
         break;
 
       case '#,':
-        flags = flags.concat(text.split(',').map(part => part.trim()));
+        flags = flags.concat(text.split(',').map((part) => part.trim()));
         break;
 
       case 'msgctxt':

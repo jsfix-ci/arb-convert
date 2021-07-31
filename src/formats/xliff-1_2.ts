@@ -21,8 +21,8 @@ export function convert({
   const targetJs = target ? JSON.parse(target) : null;
 
   const transUnits = Object.keys(sourceJs)
-    .filter(key => key[0] !== '@')
-    .map(key => {
+    .filter((key) => key[0] !== '@')
+    .map((key) => {
       const sourceString = sourceJs[key];
       const targetString = targetJs && targetJs[key];
       const { description, placeholders } = sourceJs[`@${key}`];
@@ -46,8 +46,8 @@ export function convert({
       if (Object.keys(placeholders).length > 0) {
         const contextGroupChildren: Element[] = [];
 
-        Object.keys(placeholders).forEach(paramName => {
-          Object.keys(placeholders[paramName]).forEach(property => {
+        Object.keys(placeholders).forEach((paramName) => {
+          Object.keys(placeholders[paramName]).forEach((property) => {
             contextGroupChildren.push(
               makeElement('context', {
                 'context-type': 'paramnotes',
@@ -117,7 +117,7 @@ export function parse({ content }: IParseOptions): IConvertOptions {
   file
     .query('body')
     .queryAll('trans-unit')
-    .forEach(transUnit => {
+    .forEach((transUnit) => {
       const sourceText = transUnit
         .query('source')
         .innerText();
@@ -127,20 +127,20 @@ export function parse({ content }: IParseOptions): IConvertOptions {
         .innerText();
 
       const description = transUnit
-        .query(el => el.name === 'note'
+        .query((el) => el.name === 'note'
                     && el.attributes != null
                     && el.attributes.from === 'developer')
         .innerText();
 
       const placeholders: IArbPlaceholders = {};
       transUnit
-        .queryAll(el => el.name === 'context-group'
+        .queryAll((el) => el.name === 'context-group'
                     && el.attributes != null
                     && el.attributes.purpose === 'informational')
-        .queryAll(el => el.name === 'context'
+        .queryAll((el) => el.name === 'context'
                     && el.attributes != null
                     && el.attributes['context-type'] === 'paramnotes')
-        .forEach(el => {
+        .forEach((el) => {
           const match = el.innerText().match(/^\{([\w-]+)\} (.*): (.*)$/);
           if (match) {
             const [, key, type, value] = match;

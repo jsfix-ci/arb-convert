@@ -21,8 +21,8 @@ export function convert({
   const targetJs = target ? JSON.parse(target) : null;
 
   const units = Object.keys(sourceJs)
-    .filter(key => key[0] !== '@')
-    .map(key => {
+    .filter((key) => key[0] !== '@')
+    .map((key) => {
       const sourceString = sourceJs[key];
       const targetString = targetJs && targetJs[key];
       const { description, placeholders } = sourceJs[`@${key}`];
@@ -47,8 +47,8 @@ export function convert({
       }
 
       if (Object.keys(placeholders).length > 0) {
-        Object.keys(placeholders).forEach(paramName => {
-          Object.keys(placeholders[paramName]).forEach(property => {
+        Object.keys(placeholders).forEach((paramName) => {
+          Object.keys(placeholders[paramName]).forEach((property) => {
             notesChildren.push(
               makeElement('note', {
                 category: 'placeholder',
@@ -118,7 +118,7 @@ export function parse({ content }: IParseOptions): IConvertOptions {
 
   file
     .queryAll('unit')
-    .forEach(unit => {
+    .forEach((unit) => {
       const sourceText = unit
         .queryAll('segment')
         .query('source')
@@ -131,7 +131,7 @@ export function parse({ content }: IParseOptions): IConvertOptions {
 
       const description = unit
         .query('notes')
-        .query(el => el.name === 'note'
+        .query((el) => el.name === 'note'
                     && el.attributes != null
                     && el.attributes.category === 'description')
         .innerText();
@@ -139,10 +139,10 @@ export function parse({ content }: IParseOptions): IConvertOptions {
       const placeholders: IArbPlaceholders = {};
       unit
         .query('notes')
-        .queryAll(el => el.name === 'note'
+        .queryAll((el) => el.name === 'note'
                     && el.attributes != null
                     && el.attributes.category === 'placeholder')
-        .forEach(el => {
+        .forEach((el) => {
           const match = el.innerText().match(/^\{([\w-]+)\} (.*): (.*)$/);
           if (match) {
             const [, key, type, value] = match;

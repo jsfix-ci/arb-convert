@@ -61,8 +61,8 @@ function innerElements<T>(this: XmlQueryNode<T>) {
 
 function innerText<T>(this: XmlQueryNode<T>) {
   return this.innerElements()
-    .filter(el => el.type === 'text')
-    .map(el => el.text)
+    .filter((el) => el.type === 'text')
+    .map((el) => el.text)
     .join('');
 }
 
@@ -72,7 +72,7 @@ function query<T>(this: XmlQueryNode<T>, predicate: Predicate) {
       return xmlQuery(
         this.innerElements()
           .map(xmlQuery)
-          .find(el => el.name === predicate),
+          .find((el) => el.name === predicate),
       );
 
     case 'number':
@@ -96,7 +96,7 @@ function queryAll<T>(this: XmlQueryNode<T>, predicate: Predicate) {
       return xmlQuery(
         this.innerElements()
           .map(xmlQuery)
-          .filter(el => el.name === predicate),
+          .filter((el) => el.name === predicate),
       );
 
     case 'number':
