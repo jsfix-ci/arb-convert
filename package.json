@@ -11,6 +11,7 @@
     "po2arb": "dist/cli/po2arb.js"
   },
   "scripts": {
+    "prepare": "husky install",
     "prepublish": "npm run build",
     "build": "tsc",
     "watch": "tsc -w",
