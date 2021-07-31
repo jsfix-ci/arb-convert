@@ -1,7 +1,6 @@
 /* eslint-disable global-require */
 import fs from 'fs';
-import path from 'path';
-import tempDirectory from 'temp-dir';
+import tempy from 'tempy';
 
 mockDateNow();
 
@@ -62,7 +61,7 @@ describe('arb2xliff cli tool', () => {
   });
 
   test('with --sourcefile arg to file', () => {
-    const outPath = path.join(tempDirectory, 'output.xliff');
+    const outPath = tempy.file({ extension: 'xliff' });
     process.argv = [
       'node', 'arb2xliff.js',
       '--sourcefile', 'src/cli/__tests__/source.arb',

@@ -1,7 +1,6 @@
 /* eslint-disable global-require */
 import fs from 'fs';
-import path from 'path';
-import tempDirectory from 'temp-dir';
+import tempy from 'tempy';
 
 mockDateNow();
 
@@ -61,7 +60,7 @@ describe('po2arb cli tool', () => {
   });
 
   test('with --file arg to file', () => {
-    const sourceOutPath = path.join(tempDirectory, 'output.arb');
+    const sourceOutPath = tempy.file({ extension: 'arb' });
     process.argv = [
       'node', 'po2arb.js',
       '--file', 'src/cli/__tests__/only_source.po',
@@ -76,8 +75,8 @@ describe('po2arb cli tool', () => {
   });
 
   test('with --sourceout and --targetout args', () => {
-    const sourceOutPath = path.join(tempDirectory, 'output_source.arb');
-    const targetOutPath = path.join(tempDirectory, 'output_target.arb');
+    const sourceOutPath = tempy.file({ extension: 'arb' });
+    const targetOutPath = tempy.file({ extension: 'arb' });
     process.argv = [
       'node', 'po2arb.js',
       '--file', 'src/cli/__tests__/with_target.po',

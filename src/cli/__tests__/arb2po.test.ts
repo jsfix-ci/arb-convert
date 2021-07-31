@@ -1,7 +1,6 @@
 /* eslint-disable global-require */
 import fs from 'fs';
-import path from 'path';
-import tempDirectory from 'temp-dir';
+import tempy from 'tempy';
 
 mockDateNow();
 
@@ -62,7 +61,7 @@ describe('arb2po cli tool', () => {
   });
 
   test('with --sourcefile arg to file', () => {
-    const outPath = path.join(tempDirectory, 'output.po');
+    const outPath = tempy.file({ extension: 'po' });
     process.argv = [
       'node', 'arb2po.js',
       '--sourcefile', 'src/cli/__tests__/source.arb',
