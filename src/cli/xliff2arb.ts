@@ -35,8 +35,12 @@ try {
     process.stdout.write(result.source);
   }
 
-  if (options.targetout) {
-    fs.writeFileSync(options.targetout, result.target!);
+  if (options.targetout && !result.target) {
+    process.stdout.write('warn: no target strings found in source file');
+  }
+
+  if (options.targetout && result.target) {
+    fs.writeFileSync(options.targetout, result.target);
   }
 } catch (error) {
   process.stdout.write(`error: ${error.message}`);
