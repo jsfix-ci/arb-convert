@@ -92,6 +92,24 @@ describe('po2arb cli tool', () => {
     expect(fs.readFileSync(targetOutPath).toString()).toBe(targetArb);
   });
 
+  test('with --sourceout and --targetout args, but missing target strings', () => {
+    const sourceOutPath = tempy.file({ extension: 'arb' });
+    const targetOutPath = tempy.file({ extension: 'arb' });
+    process.argv = [
+      'node', 'po2arb.js',
+      '--file', 'src/cli/__tests__/only_source.po',
+      '--sourceout', sourceOutPath,
+      '--targetout', targetOutPath,
+    ];
+    expect(() => require('../po2arb')).not.toThrow();
+
+    expect(exitSpy).not.toHaveBeenCalled();
+    expect(stdoutSpy).toHaveBeenCalled();
+    expect(helpSpy).not.toHaveBeenCalled();
+    expect(fs.readFileSync(sourceOutPath).toString()).toBe(sourceArb);
+    expect(fs.existsSync(targetOutPath)).toBe(false);
+  });
+
   afterAll(() => {
     jest.restoreAllMocks();
   });

@@ -92,6 +92,24 @@ describe('xliff2arb cli tool', () => {
     expect(fs.readFileSync(targetOutPath).toString()).toBe(targetArb);
   });
 
+  test('with --sourceout and --targetout args, but missing target strings', () => {
+    const sourceOutPath = tempy.file({ extension: 'arb' });
+    const targetOutPath = tempy.file({ extension: 'arb' });
+    process.argv = [
+      'node', 'xliff2arb.js',
+      '--file', 'src/cli/__tests__/only_source.xliff',
+      '--sourceout', sourceOutPath,
+      '--targetout', targetOutPath,
+    ];
+    expect(() => require('../xliff2arb')).not.toThrow();
+
+    expect(exitSpy).not.toHaveBeenCalled();
+    expect(stdoutSpy).toHaveBeenCalled();
+    expect(helpSpy).not.toHaveBeenCalled();
+    expect(fs.readFileSync(sourceOutPath).toString()).toBe(sourceArb);
+    expect(fs.existsSync(targetOutPath)).toBe(false);
+  });
+
   afterAll(() => {
     jest.restoreAllMocks();
   });
