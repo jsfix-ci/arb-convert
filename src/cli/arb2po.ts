@@ -17,35 +17,37 @@ program
   .parse(process.argv);
 
 // No params
-if (program.rawArgs.length <= 2) {
+if (process.argv.length <= 2) {
   program.help(); // shows help and exits
 }
 
 try {
-  if (!program.sourcefile) {
+  const options = program.opts();
+
+  if (!options.sourcefile) {
     throw new Error("option '--sourcefile <filename>' is required");
   }
 
-  const sourceContent = fs.readFileSync(program.sourcefile, 'utf8');
-  const targetContent = program.targetfile && fs.readFileSync(program.targetfile, 'utf8');
+  const sourceContent = fs.readFileSync(options.sourcefile, 'utf8');
+  const targetContent = options.targetfile && fs.readFileSync(options.targetfile, 'utf8');
   const result = convertFromArb('gettext', {
     source: sourceContent,
     target: targetContent,
-    original: program.original,
+    original: options.original,
     sourceLanguage: parseLocale(
-      program.sourcelang,
+      options.sourcelang,
       determineArbLocale(sourceContent),
-      program.sourcefile,
+      options.sourcefile,
     ),
-    targetLanguage: program.targetfile && parseLocale(
-      program.targetlang,
+    targetLanguage: options.targetfile && parseLocale(
+      options.targetlang,
       determineArbLocale(targetContent),
-      program.targetfile,
+      options.targetfile,
     ),
   });
 
-  if (program.out) {
-    fs.writeFileSync(program.out, result.content);
+  if (options.out) {
+    fs.writeFileSync(options.out, result.content);
   } else {
     process.stdout.write(result.content);
   }

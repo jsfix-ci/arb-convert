@@ -13,28 +13,30 @@ program
   .parse(process.argv);
 
 // No params
-if (program.rawArgs.length <= 2) {
+if (process.argv.length <= 2) {
   program.help(); // shows help and exits
 }
 
 try {
-  if (!program.file) {
+  const options = program.opts();
+
+  if (!options.file) {
     throw new Error("option '--file <filename>' is required");
   }
 
-  const fileContent = fs.readFileSync(program.file, 'utf8');
+  const fileContent = fs.readFileSync(options.file, 'utf8');
   const result = parseToArb('xliff', {
     content: fileContent,
   });
 
-  if (program.sourceout) {
-    fs.writeFileSync(program.sourceout, result.source);
+  if (options.sourceout) {
+    fs.writeFileSync(options.sourceout, result.source);
   } else {
     process.stdout.write(result.source);
   }
 
-  if (program.targetout) {
-    fs.writeFileSync(program.targetout, result.target);
+  if (options.targetout) {
+    fs.writeFileSync(options.targetout, result.target!);
   }
 } catch (error) {
   process.stdout.write(`error: ${error.message}`);
