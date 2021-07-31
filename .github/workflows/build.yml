@@ -9,15 +9,16 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [8.x, 10.x, 12.x]
+        node-version: [12, 14, 16]
 
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v2
 
     - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v1
+      uses: actions/setup-node@v2
       with:
         node-version: ${{ matrix.node-version }}
+        cache: 'npm'
 
     - name: npm install, build, and test
       run: |
@@ -28,6 +29,6 @@ jobs:
         CI: true
 
     - name: Send coverage data to Coveralls
-      uses: coverallsapp/github-action@v1.0.1
+      uses: coverallsapp/github-action@master
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
